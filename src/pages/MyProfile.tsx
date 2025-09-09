@@ -91,6 +91,7 @@ const MyProfile: React.FC = () => {
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-4">
                   {formData.avatar ? (
                     <img
+                    loading='lazy'
                       src={formData.avatar}
                       alt="Profile"
                       className="w-full h-full object-cover"

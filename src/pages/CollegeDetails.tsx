@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
 
 interface College {
   _id: string;
@@ -87,8 +88,10 @@ const CollegeDetail: React.FC = () => {
       });
       setNewReview({ rating: 5, comment: '' });
       fetchReviews(); // Refresh reviews
-    } catch (error) {
+    } catch (error:any) {
       console.error('Failed to submit review:', error);
+      toast.error(error?.response?.data?.message)
+
     } finally {
       setReviewLoading(false);
     }
@@ -143,6 +146,7 @@ const CollegeDetail: React.FC = () => {
             <img
               src={college.image || 'https://via.placeholder.com/800x400'}
               alt={college.name}
+              loading='lazy'
               className="w-full h-64 md:h-96 object-cover"
             />
           </div>

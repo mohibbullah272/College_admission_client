@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 
-interface College {
+export interface College {
   _id: string;
   name: string;
   image: string;
@@ -17,6 +17,17 @@ interface College {
   events: string[];
   sports: string[];
 }
+export const renderStars = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={i <= rating ? 'text-yellow-400' : 'text-gray-300'}>
+          ★
+        </span>
+      );
+    }
+    return stars;
+  };
 
 const Colleges: React.FC = () => {
   const [colleges, setColleges] = useState<College[]>([]);
@@ -44,17 +55,6 @@ const Colleges: React.FC = () => {
 
 
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span key={i} className={i <= rating ? 'text-yellow-400' : 'text-gray-300'}>
-          ★
-        </span>
-      );
-    }
-    return stars;
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -78,6 +78,7 @@ const Colleges: React.FC = () => {
                 <Card key={college._id} className="overflow-hidden">
                   <div className="h-48 overflow-hidden">
                     <img
+                    loading='lazy'
                       src={college.image || 'https://via.placeholder.com/400x300'}
                       alt={college.name}
                       className="w-full h-full object-cover"

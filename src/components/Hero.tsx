@@ -29,7 +29,7 @@ const Hero = ({
   return (
     <section className="overflow-hidden py-32 px-7">
       <div className="container">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col  gap-5">
           <div className="relative flex flex-col gap-5">
             <div
               style={{

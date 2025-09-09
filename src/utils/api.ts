@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://college-admission-server-five.vercel.app/api';
 
 
 const api = axios.create({
@@ -58,6 +58,8 @@ export const reviewsAPI = {
     api.post('/reviews', reviewData),
   
   getByCollege: (collegeId: string) => api.get(`/reviews/college/${collegeId}`),
+  
+  getAllReview: () => api.get(`/reviews/all`),
   
   getFeatured: (params?: { limit?: number }) =>
     api.get('/reviews/featured', { params }),

@@ -1,13 +1,13 @@
 // src/pages/MyCollege.tsx
 import React, { useState, useEffect } from 'react';
 import { admissionsAPI, reviewsAPI } from '../utils/api';
-import { useAuth } from '../context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ProtectedRoute from '../components/ProtectedRoute';
+import { toast } from 'sonner';
 
 interface Admission {
   _id: string;
@@ -43,9 +43,9 @@ const MyCollege: React.FC = () => {
     setLoading(true);
     try {
       const response = await admissionsAPI.getMyAdmissions();
-      setAdmissions(response.data);
+      setAdmissions(response.data.data);
       if (response.data.length > 0) {
-        setSelectedAdmission(response.data[0]);
+        setSelectedAdmission(response.data.data[0]);
       }
     } catch (error) {
       console.error('Failed to fetch admissions:', error);
@@ -69,12 +69,12 @@ const MyCollege: React.FC = () => {
       alert('Review submitted successfully!');
     } catch (error: any) {
       console.error('Failed to submit review:', error);
-      alert(error.response?.data?.message || 'Failed to submit review');
+      toast(error.response?.data?.message || 'Failed to submit review');
     } finally {
       setSubmittingReview(false);
     }
   };
-
+console.log(admissions)
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved':
@@ -121,7 +121,7 @@ const MyCollege: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {admissions.map((admission) => (
+                    {admissions?.map((admission) => (
                       <div
                         key={admission._id}
                         className={`p-4 rounded-lg border cursor-pointer transition-colors ${

@@ -1,4 +1,4 @@
-// src/layout/Main.tsx
+
 
 import { Outlet } from 'react-router';
 import Navbar from './Navbar';
@@ -11,11 +11,11 @@ const Main: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col   min-h-screen">
       <Navbar>
       </Navbar>
       
-      <main className="flex-grow">
+      <main className="flex-grow ">
         <Outlet />
       </main>
       
