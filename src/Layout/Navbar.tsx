@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 import {
@@ -15,12 +14,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Link, NavLink } from "react-router"
+import { ModeToggle } from "@/components/mode-toggle"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Products" },
-  { href: "#", label: "Categories" },
-  { href: "#", label: "Deals" },
+    { href: "/", label: "Home" },
+  { href: "colleges", label: "Colleges" },
+  { href: "admission", label: "Admission" },
+  { href: "my-college", label: "My College" },
 ]
 
 export default function Navbar() {
@@ -71,9 +73,9 @@ export default function Navbar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink href={link.href} className="py-1.5">
+                      <NavLink to={link.href} className="py-1.5">
                         {link.label}
-                      </NavigationMenuLink>
+                      </NavLink>
                     </NavigationMenuItem>
                   ))}
                   <NavigationMenuItem
@@ -86,46 +88,43 @@ export default function Navbar() {
                       aria-orientation="horizontal"
                       className="bg-border -mx-1 my-1 h-px"
                     ></div>
+                  
                   </NavigationMenuItem>
                   <NavigationMenuItem className="w-full">
-                    <NavigationMenuLink href="#" className="py-1.5">
+                    <Link to="/signin" className="py-1.5">
                       Sign In
-                    </NavigationMenuLink>
+                    </Link>
                   </NavigationMenuItem>
-                  <NavigationMenuItem className="w-full">
+                  <Link to={'/signup'} className="w-full mb-2">
                     <Button
-                      asChild
+                    
                       size="sm"
-                      className="mt-0.5 w-full text-left text-sm"
+                      className="mt-2 w-full   text-left text-sm"
                     >
-                      <span className="flex items-baseline gap-2">
-                        Cart
-                        <span className="text-primary-foreground/60 text-xs">
-                          2
-                        </span>
-                      </span>
+                    Sign Up
                     </Button>
-                  </NavigationMenuItem>
+                  </Link>
                 </NavigationMenuList>
               </NavigationMenu>
+                <ModeToggle mobileView={true}></ModeToggle>
             </PopoverContent>
           </Popover>
           {/* Main nav */}
           <div className="flex flex-1 items-center gap-6 max-md:justify-between">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      href={link.href}
+                    <NavLink
+                      to={link.href}
                       className="text-muted-foreground hover:text-primary py-1.5 font-medium"
                     >
                       {link.label}
-                    </NavigationMenuLink>
+                    </NavLink>
                   </NavigationMenuItem>
                 ))}
               </NavigationMenuList>
@@ -147,16 +146,17 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2 max-md:hidden">
           <Button asChild variant="ghost" size="sm" className="text-sm">
-            <a href="#">Sign In</a>
+            <Link to="/signin">Sign In</Link>
           </Button>
           <Button asChild size="sm" className="text-sm">
-            <a href="#">
-              <span className="flex items-baseline gap-2">
-                Cart
+            <Link to="/signup">
+            
+              Sign Up
               
-              </span>
-            </a>
+             
+            </Link>
           </Button>
+          <ModeToggle mobileView={false}></ModeToggle>
         </div>
       </div>
     </header>
