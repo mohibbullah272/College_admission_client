@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { collegesAPI } from '../utils/api';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/context/AuthContext';
 
 interface College {
   _id: string;
@@ -20,18 +21,18 @@ interface College {
 const Colleges: React.FC = () => {
   const [colleges, setColleges] = useState<College[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+    const {user}=useAuth()
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     fetchColleges();
-  }, [page, searchTerm]);
+  }, [page]);
 
   const fetchColleges = async () => {
     setLoading(true);
     try {
-      const response = await collegesAPI.getAll({ page, limit: 6, search: searchTerm });
+      const response = await collegesAPI.getAll({ page, limit: 6, });
       setColleges(response.data.data);
       setTotalPages(response.data.pagination.pages);
     } catch (error) {
@@ -41,11 +42,7 @@ const Colleges: React.FC = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPage(1);
-    fetchColleges();
-  };
+
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -63,18 +60,7 @@ const Colleges: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Colleges</h1>
       
-      <form onSubmit={handleSearch} className="mb-8">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Search for colleges..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-grow"
-          />
-          <Button type="submit">Search</Button>
-        </div>
-      </form>
+
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -131,9 +117,11 @@ const Colleges: React.FC = () => {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Link to={`/colleges/${college._id}`} className="w-full">
-                      <Button className="w-full">View Details</Button>
-                    </Link>
+                {
+                    user &&     <Link to={`/colleges/${college._id}`} className="w-full">
+                    <Button className="w-full">View Details</Button>
+                  </Link>
+                }
                   </CardFooter>
                 </Card>
               ))}

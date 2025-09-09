@@ -1,5 +1,5 @@
 import { useId } from "react"
-import { SearchIcon } from "lucide-react"
+import { LogOut, SearchIcon } from "lucide-react"
 
 import Logo from "@/components/logo"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover"
 import { Link, NavLink } from "react-router"
 import { ModeToggle } from "@/components/mode-toggle"
+import { useAuth } from "@/context/AuthContext"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -27,7 +28,8 @@ const navigationLinks = [
 
 export default function Navbar() {
   const id = useId()
-
+  const {user}=useAuth()
+  console.log(user)
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -90,22 +92,27 @@ export default function Navbar() {
                     ></div>
                   
                   </NavigationMenuItem>
-                  <NavigationMenuItem className="w-full">
-                    <Link to="/signin" className="py-1.5">
-                      Sign In
-                    </Link>
-                  </NavigationMenuItem>
-                  <Link to={'/signup'} className="w-full mb-2">
-                    <Button
-                    
-                      size="sm"
-                      className="mt-2 w-full   text-left text-sm"
-                    >
-                    Sign Up
-                    </Button>
-                  </Link>
+           {
+            (!user ? (     <>
+            <NavigationMenuItem className="w-full">
+            <Link to="/signin" className="py-1.5">
+              Sign In
+            </Link>
+          </NavigationMenuItem>
+          <Link to={'/signup'} className="w-full mb-2">
+            <Button
+            
+              size="sm"
+              className="mt-2 w-full   text-left text-sm"
+            >
+            Sign Up
+            </Button>
+          </Link>    
+            </>  ):(<Button className="flex items-center gap-2 ">Logout <LogOut></LogOut></Button>)
+           )}
                 </NavigationMenuList>
               </NavigationMenu>
+              
                 <ModeToggle mobileView={true}></ModeToggle>
             </PopoverContent>
           </Popover>
@@ -145,17 +152,23 @@ export default function Navbar() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2 max-md:hidden">
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <Link to="/signin">Sign In</Link>
-          </Button>
-          <Button asChild size="sm" className="text-sm">
-            <Link to="/signup">
-            
-              Sign Up
-              
-             
-            </Link>
-          </Button>
+{
+  (!user? (<>          <Button asChild variant="ghost" size="sm" className="text-sm">
+  <Link to="/signin">Sign In</Link>
+</Button>
+<Button asChild size="sm" className="text-sm">
+  <Link to="/signup">
+  
+    Sign Up
+    
+   
+  </Link>
+</Button></>):(<div className="flex items-center gap-3">
+ <Link to={'/my-profile'}>
+ <button className="bg-red-600 rounded-full w-10 h-10 text-sm">{user?.name?.slice(0,2)}</button>
+ </Link>
+  <Button className="flex items-center gap-2 ">Logout <LogOut></LogOut></Button> </div>))
+}
           <ModeToggle mobileView={false}></ModeToggle>
         </div>
       </div>
